@@ -26,6 +26,7 @@ module Parslet::Atoms
     def try_with_cache(obj, source, consume_all)
       beg = source.bytepos
         
+      err(obj, source, "Skipped") if cutting?
       # Not in cache yet? Return early.
       unless entry = lookup(obj, beg)
         result = obj.try(source, self, consume_all)
@@ -87,6 +88,10 @@ module Parslet::Atoms
     ensure
       captures.pop
     end
+
+    def cut!
+      @cutting = true
+    end
     
   private 
     # NOTE These methods use #object_id directly, since that seems to bring the
@@ -98,6 +103,10 @@ module Parslet::Atoms
     end
     def set(obj, pos, val)
       @cache[pos][obj.object_id] = val
+    end
+
+    def cutting?
+      @cutting
     end
   end
 end

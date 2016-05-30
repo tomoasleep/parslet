@@ -66,6 +66,14 @@ module Parslet::Atoms::DSL
   def |(parslet)
     Parslet::Atoms::Alternative.new(self, parslet)
   end
+
+  #
+  # Example: 
+  #   str('foo').cut
+  #
+  def cut
+    Parslet::Atoms::Cut.new(self)
+  end
   
   # Tests for absence of a parslet atom in the input stream without consuming
   # it. 
